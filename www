@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('./app');
 var debug = require('debug')('url-shortener-app:server');
 var http = require('http');
 
@@ -76,7 +76,6 @@ function onError(error) {
       throw error;
   }
 }
-
 /**
  * Event listener for HTTP server "listening" event.
  */

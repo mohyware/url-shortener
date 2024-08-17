@@ -58,7 +58,6 @@
 
 <body>
     <h1>URL Shortener</h1>
-
     <div class="form-container">
         <form id="urlForm" method="POST">
             <label for="urlInput">Enter URL:</label>
@@ -74,21 +73,50 @@
             <tr>
                 <th>Original URL</th>
                 <th>Shortened URL</th>
-            </tr>
+
+                <% data.forEach(link=> { %>
             <tr>
-                <td><a href="https://github.com/cat-backend-nodejs/nodejs-roadmap">https://github.com/cat-backend-nodejs/nodejs-roadmap</a></td>
-                <td><a href="http://localhost:3000/nodejs">http://localhost:3000/nodejs</a></td>
+                <td>
+                    <a href="<%=`${link.long}` %>" target="_blank">
+                        <%=link.long %>
+                    </a>
+                </td>
+                <td>
+                    <a href="<%=`${link.long}` %>" target="_blank">
+                        <%=link.short %>
+                    </a>
+                </td>
             </tr>
-            <tr>
-                <td><a href="https://stackoverflow.com/users/11936196/seif-el-din-sweilam">https://stackoverflow.com/users/11936196/seif-el-din-sweilam</a></td>
-                <td><a href="http://localhost:3000/stackoverflow">http://localhost:3000/stackoverflow</a></td>
-            </tr>
-            <tr>
-                <td><a href="https://drive.google.com/drive/u/1/folders/1bpiBKNBd9n0Z79wrZvHVT1KyA9OBROLx">https://drive.google.com/drive/u/1/folders/1bpiBKNBd9n0Z79wrZvHVT1KyA9OBROLx</a></td>
-                <td><a href="http://localhost:3000/himym">http://localhost:3000/himym</a></td>
-            </tr>
+            <% }) %>
         </table>
     </div>
+
+
+    <script>
+        const form = document.getElementById('urlForm');
+
+        form.addEventListener('submit', function (event) {
+            console.log('Form submission prevented');
+            event.preventDefault();
+
+            const urlInput = document.getElementById('urlInput').value;
+            const aliasInput = document.getElementById('aliasInput').value;
+
+            fetch('/submit-form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ urlInput: urlInput, aliasInput: aliasInput })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                }).catch(error => console.error('Error:', error));
+        });
+    </script>
+
+
 </body>
 
 </html>
